@@ -16,6 +16,7 @@
  */
 package okhttp3.internal.connection
 
+import android.util.Log
 import java.io.IOException
 import java.lang.ref.Reference
 import java.net.Proxy

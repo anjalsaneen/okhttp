@@ -16,6 +16,7 @@
  */
 package okhttp3.internal.connection
 
+import android.util.Log
 import java.net.Socket
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.TimeUnit
@@ -87,6 +88,10 @@ class RealConnectionPool(
     requireMultiplexed: Boolean
   ): RealConnection? {
     for (connection in connections) {
+      if (address.url.host == connection.route().address.url.host) {
+        Log.d("Okhttp", "<<<<Okhttp Same Host. IsEligible=${connection.isEligible(address, routes)}, requireMultiplexed=$requireMultiplexed, connection.isMultiplexed=${connection.isMultiplexed}")
+      }
+
       // In the first synchronized block, acquire the connection if it can satisfy this call.
       val acquired = synchronized(connection) {
         when {
@@ -99,6 +104,7 @@ class RealConnectionPool(
         }
       }
       if (!acquired) continue
+      Log.d("Okhttp", "<<<<Okhttp not acquired")
 
       // Confirm the connection is healthy and return it.
       if (connection.isHealthy(doExtensiveHealthChecks)) return connection

@@ -15,6 +15,7 @@
  */
 package okhttp3.internal.connection
 
+import android.util.Log
 import java.io.IOException
 import java.net.ConnectException
 import java.net.HttpURLConnection
@@ -466,6 +467,7 @@ class ConnectPlan(
 
   /** Returns the connection to use, which might be different from [connection]. */
   override fun handleSuccess(): RealConnection {
+    Log.d("Okhttp", "<<<<Okhttp handleSuccess()${this.connection?.route?.address?.url?.host}")
     call.client.routeDatabase.connected(route)
 
     // If we raced another call connecting to this host, coalesce the connections. This makes for
@@ -475,6 +477,7 @@ class ConnectPlan(
 
     val connection = this.connection!!
     synchronized(connection) {
+      Log.d("Okhttp", "<<<<Okhttp put()${this.connection?.route?.address?.url?.host}")
       client.connectionPool.delegate.put(connection)
       call.acquireConnectionNoEvents(connection)
     }
