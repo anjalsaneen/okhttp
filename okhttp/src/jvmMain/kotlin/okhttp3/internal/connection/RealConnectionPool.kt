@@ -89,7 +89,7 @@ class RealConnectionPool(
   ): RealConnection? {
     for (connection in connections) {
       if (address.url.host == connection.route().address.url.host) {
-        Log.d("Okhttp", "<<<<Okhttp Same Host. IsEligible=${connection.isEligible(address, routes)}, requireMultiplexed=$requireMultiplexed, connection.isMultiplexed=${connection.isMultiplexed}")
+        Log.d("Okhttp", "<<<<Okhttp Same Host.Url=${address.url.host}, IsEligible=${connection.isEligible(address, routes)}, requireMultiplexed=$requireMultiplexed, connection.isMultiplexed=${connection.isMultiplexed}")
       }
 
       // In the first synchronized block, acquire the connection if it can satisfy this call.
@@ -104,7 +104,7 @@ class RealConnectionPool(
         }
       }
       if (!acquired) continue
-      Log.d("Okhttp", "<<<<Okhttp not acquired")
+      Log.d("Okhttp", "<<<<Okhttp not acquired. url=${address.url.host}")
 
       // Confirm the connection is healthy and return it.
       if (connection.isHealthy(doExtensiveHealthChecks)) return connection
